@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flag Chase Challenge</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #222;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        #hiddenMessage {
+            position: absolute;
+            font-size: 24px;
+            animation: move 0.5s infinite linear, colorChange 0.2s infinite alternate, fade 1s infinite alternate;
+        }
+        @keyframes move {
+            0% { top: 0; left: 0; }
+            25% { top: 0; left: 100%; }
+            50% { top: 100%; left: 100%; }
+            75% { top: 100%; left: 0; }
+            100% { top: 0; left: 0; }
+        }
+        @keyframes colorChange {
+            0% { color: red; }
+            25% { color: yellow; }
+            50% { color: green; }
+            75% { color: blue; }
+            100% { color: purple; }
+        }
+        @keyframes fade {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div id="hiddenMessage"></div>
+    <script>
+        const part1 = atob("SW1hbVVG");
+        const part2 = atob("e3Vfcg==");
+        const part3 = caesarDecrypt("gur_orfg", 13);
+        const part4 = hexDecode("5f62616279");
+        const part5 = atob("X3hveG8=");
+        const part6 = hexDecode("7d");
+
+        const decodedFlag = part1 + part2 + part3 + part4 + part5 + part6;
+        const encodedFlag = btoa(decodedFlag);
+        
+        document.getElementById('hiddenMessage').innerText = encodedFlag;
+
+        function caesarDecrypt(str, shift) {
+            return str.split('').map(char => {
+                const code = char.charCodeAt(0);
+                if (code >= 65 && code <= 90) {
+                    return String.fromCharCode(((code - 65 + shift) % 26) + 65);
+                } else if (code >= 97 && code <= 122) {
+                    return String.fromCharCode(((code - 97 + shift) % 26) + 97);
+                }
+                return char;
+            }).join('');
+        }
+
+        function hexDecode(hex) {
+            return hex.split('').reduce((str, char, index) => {
+                if (index % 2 === 0) {
+                    str += String.fromCharCode(parseInt(hex.substr(index, 2), 16));
+                }
+                return str;
+            }, '');
+        }
+    </script>
+</body>
+</html>
